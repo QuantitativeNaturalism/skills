@@ -8,6 +8,9 @@ on:
       - 'tmp/drj-lockgen/package.json'
       - '.github/workflows/drj-lockgen.yml'
 
+permissions:
+  contents: write
+
 jobs:
   lock-and-ci:
     runs-on: ubuntu-latest
@@ -34,6 +37,14 @@ jobs:
           npm config get registry | tee -a lockgen-evidence.txt
           sha256sum package-lock.json | tee -a lockgen-evidence.txt
           npm ls --depth=0 | tee -a lockgen-evidence.txt
+      - name: Commit generated lock to temporary branch
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tmp/drj-lockgen/package-lock.json tmp/drj-lockgen/lockgen-evidence.txt
+          git diff --cached --quiet || git commit -m "temp: persist generated Dr J package lock"
+          git push origin HEAD:automation/drj-lockgen-20260813
       - name: Upload lock artifact
         uses: actions/upload-artifact@v4
         with:
