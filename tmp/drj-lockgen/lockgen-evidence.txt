@@ -1,0 +1,15 @@
+v22.16.0
+10.9.2
+https://registry.npmjs.org/
+1211a210b27117227edbfd4b4ff9976e31bfbe2f235db46bec6da58ba7d54623  package-lock.json
+dr-j-desktop@0.0.0-dev /home/runner/work/skills/skills/tmp/drj-lockgen
+├── @tauri-apps/api@2.11.1
+├── @tauri-apps/cli@2.11.4
+├── @types/react-dom@19.2.4
+├── @types/react@19.2.18
+├── @vitejs/plugin-react@4.7.0
+├── react-dom@19.2.8
+├── react@19.2.8
+├── typescript@5.9.3
+└── vite@6.4.3
+
