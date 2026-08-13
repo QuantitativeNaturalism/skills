@@ -1,0 +1,45 @@
+name: drj-lockgen
+
+on:
+  push:
+    branches:
+      - automation/drj-lockgen-20260813
+    paths:
+      - 'tmp/drj-lockgen/package.json'
+      - '.github/workflows/drj-lockgen.yml'
+
+jobs:
+  lock-and-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tmp/drj-lockgen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Generate package-lock
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Verify clean npm ci
+        run: |
+          rm -rf node_modules
+          npm ci --ignore-scripts --no-audit --no-fund
+      - name: Record versions and dependency tree
+        run: |
+          node --version | tee lockgen-evidence.txt
+          npm --version | tee -a lockgen-evidence.txt
+          npm config get registry | tee -a lockgen-evidence.txt
+          sha256sum package-lock.json | tee -a lockgen-evidence.txt
+          npm ls --depth=0 | tee -a lockgen-evidence.txt
+      - name: Upload lock artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: drj-package-lock
+          path: |
+            tmp/drj-lockgen/package-lock.json
+            tmp/drj-lockgen/lockgen-evidence.txt
+          if-no-files-found: error
+          retention-days: 1
