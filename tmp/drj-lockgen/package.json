@@ -1,0 +1,27 @@
+{
+  "name": "dr-j-desktop",
+  "version": "0.0.0-dev",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "tauri": "tauri",
+    "validate:bootstrap": "node scripts/validate-bootstrap.mjs",
+    "asset:mask": "node scripts/generate-alpha-mask.mjs",
+    "test:alpha-mask": "node scripts/test-alpha-mask.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.11.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.4",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
+  }
+}
